@@ -134,7 +134,7 @@ require("nvim-dap-virtual-text").setup({
 })
 
 -- lsp 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+
 
 require("lspconfig").cmake.setup {}
 require("lspconfig").lua_ls.setup {
@@ -147,7 +147,7 @@ require("lspconfig").lua_ls.setup {
   	},
 }
 require("lspconfig").clangd.setup {
-	capabilities = capabilites,
+	capabilities = vim.lsp.protocol.make_client_capabilities(),
 	on_attach = function(client,bufnr)
 		local opts = {noremap = true, silent = false}
 		local buf_set_keymap = vim.api.nvim_buf_set_keymap

@@ -36,7 +36,7 @@ dap.configurations.python = {
 dap.adapters.cppdbg = {
   id = 'cppdbg',
   type = 'executable',
-  command = 'codelldb',  -- Ensure this executable is in your PATH
+  command = 'OpenDebugAD7',  -- Ensure this executable is in your PATH
   options = {
     detached = false,
   },
@@ -75,14 +75,9 @@ dap.configurations.cpp = {
   },
 }
 
-dap.listeners.after.event_output["my_output_handler"] = function(session, body)
-  if body.category == "stdout" or body.category == "stderr" then
-    vim.schedule(function()
-      vim.api.nvim_out_write(body.output)
-    end)
-  end
-end
-
 -- Use the same configuration for C files.
 dap.configurations.c = dap.configurations.cpp
+
+
+
 
