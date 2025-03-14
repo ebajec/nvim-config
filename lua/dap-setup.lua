@@ -5,6 +5,7 @@ vim.keymap.set("n", "<F10>",	 dap.step_over)
 vim.keymap.set("n", "<F11>",	 dap.step_into)
 vim.keymap.set("n", "<F12>",	 dap.step_out)
 vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint)
+vim.keymap.set('n', '<Leader>dt', dap.terminate)
 vim.keymap.set("n", "<Leader>B", function()
   	require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
 end)
@@ -50,11 +51,25 @@ local function get_debug_args(input)
   return args
 end
 
+local mason_registry = require("mason-registry")
+local codelldb = mason_registry.get_package("codelldb")
+local extension_path = codelldb:get_install_path() .. "/extension/"
+
+dap.adapters.codelldb = {
+  type = "server",
+  port = "${port}",
+  executable = {
+    -- Change the command to point to your codelldb adapter binary:
+    command = extension_path .. "adapter/codelldb", -- or just "codelldb" if it's in your PATH
+    args = { "--port", "${port}" },
+  },
+}
+
 -- Configuration for C++ debugging.
 dap.configurations.cpp = {
   {
     name = "Launch executable",
-    type = "cppdbg",
+    type = "codelldb",
     request = "launch",
     program = function()
       -- Prompts for the path to the executable to debug
@@ -77,6 +92,35 @@ dap.configurations.cpp = {
 
 -- Use the same configuration for C files.
 dap.configurations.c = dap.configurations.cpp
+
+-- mason-nvim-dap
+
+require("mason-nvim-dap").setup({
+	ensure_installed = {
+		"cppdbg"
+	},
+	automatic_installation = true,
+})
+
+--dapui
+
+require("dapui").setup({
+	layouts = {
+	{
+		elements = { "scopes", "breakpoints", "stacks", "watches" },
+	      	size = 40,
+	      	position = "left",
+	},
+	{
+	      elements = { "repl" },
+	      size = 0.25, -- 25% of total lines
+	      position = "bottom",
+	},
+	},
+})
+require("nvim-dap-virtual-text").setup({
+	enabled = true
+})
 
 
 

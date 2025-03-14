@@ -1,6 +1,3 @@
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
@@ -32,7 +29,6 @@ require("lazy").setup({
     "L3MON4D3/LuaSnip",       -- Snippet engine
     "saadparwaiz1/cmp_luasnip", -- LuaSnip source for cmp
 	"hrsh7th/nvim-cmp",
-
 	{
 	"ray-x/lsp_signature.nvim",
 	event = "InsertEnter",
@@ -40,15 +36,43 @@ require("lazy").setup({
 		bind=true,
 		handler_opts = {
       		border = "rounded"
-    	}
+    		}
+		},
 	},
-	},
-
     "mfussenegger/nvim-dap",
     "nvim-neotest/nvim-nio",
     "rcarriga/nvim-dap-ui",
     "theHamsta/nvim-dap-virtual-text",
     "jay-babu/mason-nvim-dap.nvim",
+	{
+	  "lewis6991/gitsigns.nvim",
+	  lazy = true,
+	  event = { "BufReadPre", "BufNewFile" },
+	  config = function()
+		require("gitsigns").setup({
+		  signs = {
+			add          = { text = "│" },
+			change       = { text = "│" },
+			delete       = { text = "_" },
+			topdelete    = { text = "‾" },
+			changedelete = { text = "~" },
+		  },
+		  current_line_blame = false, -- set to true if you want inline blame info
+		})
+	  end,
+	},
+	{
+	  "nvim-tree/nvim-tree.lua",
+	  dependencies = { "nvim-tree/nvim-web-devicons" },
+	  opts = {
+		disable_netrw = true,
+		hijack_netrw  = true,
+		view = {
+		  side = "left",
+		  width = 30,
+		},
+	  },
+	},
 
     "folke/tokyonight.nvim",
     lazy = false,
@@ -56,110 +80,28 @@ require("lazy").setup({
     opts = {},
 })
 
+vim.diagnostic.config({
+  float = {
+    wrap = true,
+    border = "rounded",
+  },
+})
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+
+vim.keymap.set('n', '<leader>ghb', function() require("gitsigns").blame_line({ full = true }) end)
+vim.keymap.set('n', '<leader>ghB', function() require("gitsigns").blame() end)
+vim.keymap.set('n', '<leader>f', ":NvimTreeToggle<CR>", { desc = "Toggle File Explorer" })
+
+vim.keymap.set('n', 'tn', ':tabnew<CR>', { noremap = true, silent = true })
+
 -- mason
-
 require("mason").setup()
-require("mason-lspconfig").setup()
 
--- completion
-local cmp = require("cmp")
-cmp.setup({
-	autocomplete = true,
-    snippet = {
-        expand = function(args)
-        	require("luasnip").lsp_expand(args.body)
-        end,
-    },
-	mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-    }),
-    sources = cmp.config.sources({
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-    }, 	 {
-        { name = "buffer" },
-    }),
-})
-
-require("lsp_signature").setup({})
-
-
--- lint
-
-require("nvim-treesitter.configs").setup({
-	ensure_installed = {"c","cpp","glsl","lua","vim","vimdoc","query","markdown","markdown_inline"},
-	auto_install = true,
-	highlight = { enable = true},
-	indent = {enable = true},
-	incremental_selection = {
-		enable = true,
-		keymaps = {
-			init_selection = "<C-space>",
-			node_incremental = "<C-space>",
-			node_decremental = "<bs>"
-		},
-	},
-})
-
--- debugger
-
-require("dap-config")
-
-require("mason-nvim-dap").setup({
-	ensure_installed = {
-		"cppdbg"
-	},
-	automatic_installation = true,
-})
-require("dapui").setup({
-	layouts = {
-	{
-		elements = { "scopes", "breakpoints", "stacks", "watches" },
-	      	size = 40,
-	      	position = "left",
-	},
-	{
-	      elements = { "repl" },
-	      size = 0.25, -- 25% of total lines
-	      position = "bottom",
-	},
-	},
-})
-require("nvim-dap-virtual-text").setup({
-	enabled = true
-})
-
--- lsp 
-
-
-require("lspconfig").cmake.setup {}
-require("lspconfig").lua_ls.setup {
-	settings = {
-    	Lua = {
-      		diagnostics = {
-        			globals = { "vim" },
-      			},
-    		},
-  	},
-}
-require("lspconfig").clangd.setup {
-	capabilities = vim.lsp.protocol.make_client_capabilities(),
-	on_attach = function(client,bufnr)
-		local opts = {noremap = true, silent = false}
-		local buf_set_keymap = vim.api.nvim_buf_set_keymap
-
-		buf_set_keymap(bufnr, "n", "gd","<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-		buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-		buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-		buf_set_keymap(bufnr, "n", "<leader>r", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-	end
-}
-
-require('lspconfig').glslls.setup{}
+require("dap-setup")
+require("lsp-setup")
+require("treesitter-setup")
+require("cmp-setup")
 
 vim.cmd[[colorscheme tokyonight]]
 
