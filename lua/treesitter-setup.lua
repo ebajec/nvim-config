@@ -1,5 +1,17 @@
+vim.filetype.add({
+	extension = {
+		vert = "glsl",
+		comp = "glsl",
+		frag = "glsl",
+		geom = "glsl",
+		tesc = "glsl",
+		tese = "glsl",
+	}
+})
+
 require("nvim-treesitter.configs").setup({
-	ensure_installed = {"c","cpp","glsl","lua","vim","vimdoc","query","markdown","markdown_inline"},
+	ensure_installed = {
+		"c","cpp","glsl","lua","vim","vimdoc","query","markdown","markdown_inline"},
 	auto_install = true,
 	highlight = { enable = true},
 	indent = {enable = true},

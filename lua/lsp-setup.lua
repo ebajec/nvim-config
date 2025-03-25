@@ -26,10 +26,22 @@ require("lspconfig").clangd.setup {
 		buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
 		buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 		buf_set_keymap(bufnr, "n", "<leader>r", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+		buf_set_keymap(bufnr, "n", "<leader>Rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+
+		buf_set_keymap(bufnr, "n", "<leader>gn", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
 	end,
 	flags = {
 		debounce_text_changes = 100,
 	},
 }
 
-require('lspconfig').glslls.setup{}
+require('lspconfig').glsl_analyzer.setup{}
+
+vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
+  pattern = {"*.comp"},
+  callback = function()
+    vim.bo.filetype = "glsl"
+  end,
+})
+
+
