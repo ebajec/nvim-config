@@ -80,10 +80,11 @@ dap.configurations.cpp = {
     end,
     cwd = "${workspaceFolder}",
     stopOnEntry = false,
+	disableDataFormatting = true,
     setupCommands = {
       {
-        description = "Enable pretty-printing for gdb",
-        text = "-enable-pretty-printing",
+        --description = "Enable pretty-printing for gdb",
+        --text = "-enable-pretty-printing",
         ignoreFailures = false,
       },
     },
