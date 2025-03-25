@@ -110,6 +110,8 @@ require("lazy").setup({
 		  desc = "Quickfix List (Trouble)",
 		},
 	  },
+	},
+	{
 	  "ellisonleao/glow.nvim",
 	  cmd = "Glow",         -- lazy-load the plugin when :Glow is executed
 	  ft = { "markdown" },  -- or load it automatically when editing Markdown files
