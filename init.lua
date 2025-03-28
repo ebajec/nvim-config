@@ -40,7 +40,7 @@ vim.opt.shiftwidth = 4
 
 vim.keymap.set('n', '<leader>ghb', function() require("gitsigns").blame_line({ full = true }) end)
 vim.keymap.set('n', '<leader>ghB', function() require("gitsigns").blame() end)
-vim.keymap.set('n', '<leader>f', ":NvimTreeToggle<CR>", { desc = "Toggle File Explorer" })
+vim.keymap.set('n', '<leader><Space>', ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 vim.keymap.set('n', 'tn', ':tabnew<CR>', { noremap = true, silent = true })
 
 vim.cmd[[colorscheme tokyonight]]
