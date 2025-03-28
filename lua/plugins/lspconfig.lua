@@ -1,4 +1,4 @@
-
+local setup = function()
 -- lsp 
 require("lspconfig").cmake.setup {}
 require("lspconfig").lua_ls.setup {
@@ -10,6 +10,18 @@ require("lspconfig").lua_ls.setup {
 		},
 	},
 }
+
+local signature_setup = {
+	on_attach = function(client, bufnr)
+		require "lsp_signature".on_attach({
+		  bind = true,
+		  handler_opts = {
+			border = "rounded"
+		  }
+		}, bufnr)
+  	end,
+}
+
 require("lspconfig").clangd.setup {
 	cmd = {
 		"clangd",
@@ -19,6 +31,9 @@ require("lspconfig").clangd.setup {
 	},
 	capabilities = vim.lsp.protocol.make_client_capabilities(),
 	on_attach = function(client,bufnr)
+
+		require("lsp_signature").on_attach(signature_setup,bufnr)
+
 		local opts = {noremap = true, silent = false}
 		local buf_set_keymap = vim.api.nvim_buf_set_keymap
 
@@ -44,4 +59,11 @@ vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   end,
 })
 
+end
 
+return {
+    "neovim/nvim-lspconfig",
+	config = function()
+		setup()
+	end
+}
