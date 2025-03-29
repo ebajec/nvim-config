@@ -18,6 +18,7 @@ require("lazy").setup("plugins")
 require("mason").setup()
 
 -- need to run this after mason setup
+require("dap-setup").setup()
 require("cmp-setup").setup()
 
 local function smart_width()
