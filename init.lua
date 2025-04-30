@@ -36,11 +36,9 @@ vim.diagnostic.config({
 		max_width = smart_width(),
 	},
 })
+
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
-
-vim.keymap.set('n', '<leader>ghb', function() require("gitsigns").blame_line({ full = true }) end)
-vim.keymap.set('n', '<leader>ghB', function() require("gitsigns").blame() end)
 
 vim.keymap.set('n', '<leader><Space>', ":NvimTreeToggle<CR>", { noremap = true, silent = true })
 
@@ -48,7 +46,7 @@ local keyopts = { noremap = true, silent = true }
 
 vim.keymap.set('n', 'tn', ':tabnew<CR>', keyopts)
 
-vim.cmd[[colorscheme tokyonight]]
+vim.cmd.colorscheme "tokyonight-moon"
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   vim.lsp.handlers.hover,
