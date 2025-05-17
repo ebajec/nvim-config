@@ -14,7 +14,8 @@ return {
     	config = function()
 		require("nvim-treesitter.configs").setup({
 			ensure_installed = {
-				"c","cpp","glsl","lua","vim","vimdoc","query","markdown","markdown_inline"},
+				"c","cpp","glsl","lua","vim",
+				"vimdoc","query","markdown","markdown_inline"},
 			auto_install = true,
 			highlight = { enable = true},
 			indent = {enable = true},

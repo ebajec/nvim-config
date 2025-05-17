@@ -54,25 +54,25 @@ local function get_debug_args(input)
 	return args
 end
 
-local mason_registry = require("mason-registry")
-local codelldb = mason_registry.get_package("codelldb")
-local extension_path = codelldb:get_install_path() .. "/extension/"
-
-dap.adapters.codelldb = {
-	type = "server",
-	port = "${port}",
-	executable = {
-		-- Change the command to point to your codelldb adapter binary:
-		command = extension_path .. "adapter/codelldb", -- or just "codelldb" if it's in your PATH
-		args = { "--port", "${port}" },
-	},
-}
+--local mason_registry = require("mason-registry")
+--local codelldb = mason_registry.get_package("codelldb")
+--local extension_path = codelldb:get_install_path() .. "/extension/"
+--
+--dap.adapters.codelldb = {
+--	type = "server",
+--	port = "${port}",
+--	executable = {
+--		-- Change the command to point to your codelldb adapter binary:
+--		command = extension_path .. "adapter/codelldb", -- or just "codelldb" if it's in your PATH
+--		args = { "--port", "${port}" },
+--	},
+--}
 
 -- Configuration for C++ debugging.
 dap.configurations.cpp = {
 	{
 		name = "Launch executable",
-		type = "codelldb",
+		type = "cppdbg",
 		request = "launch",
 		program = function()
 			-- Prompts for the path to the executable to debug

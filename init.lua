@@ -46,10 +46,10 @@ local keyopts = { noremap = true, silent = true }
 
 vim.keymap.set('n', 'tn', ':tabnew<CR>', keyopts)
 
-vim.cmd.colorscheme "tokyonight-moon"
-
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   vim.lsp.handlers.hover,
   { max_width = smart_width() }
 )
+
+vim.cmd([[colorscheme tokyonight]])
 
