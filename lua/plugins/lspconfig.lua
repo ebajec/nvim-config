@@ -51,6 +51,7 @@ require("lspconfig").clangd.setup {
 }
 
 require('lspconfig').glsl_analyzer.setup{}
+require('lspconfig').jsonls.setup{}
 
 vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
   pattern = {"*.comp"},
