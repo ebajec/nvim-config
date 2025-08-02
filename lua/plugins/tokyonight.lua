@@ -7,6 +7,11 @@ return
 
 	config = function() require("tokyonight").setup({
 		style = "moon",
+		transparent = true,
+		styles = {
+			sidebars = "transparent",
+			floats = "transparent"
+		},
 		on_highlights = function(hl, c)
 			-- change TSFunction (definitions & calls)
 			hl.TSFunction = { fg = "#FF0000", bg = c.none }

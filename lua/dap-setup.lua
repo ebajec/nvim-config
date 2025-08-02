@@ -48,7 +48,7 @@ dap.adapters.cppdbg = {
 
 local function get_debug_args(input)
 	local args = {}
-	for arg in string.gmatch(input, "([^,]+)") do
+	for arg in string.gmatch(input, '"(.-)"') do
 		table.insert(args, vim.trim(arg))
 	end
 	return args
@@ -65,7 +65,7 @@ dap.configurations.cpp = {
 			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 		end,
 		args = function()
-			return get_debug_args(vim.fn.input("Debug arguments (comma separated):"))
+			return get_debug_args(vim.fn.input("Debug arguments:"))
 		end,
 		cwd = "${workspaceFolder}",
 		stopOnEntry = false,

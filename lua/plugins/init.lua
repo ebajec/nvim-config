@@ -62,5 +62,5 @@ return {
 			  end,
 			})
 		end
-	}
+	},
 }

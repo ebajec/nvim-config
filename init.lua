@@ -13,43 +13,26 @@ vim.opt.rtp:prepend(lazypath)
 vim.opt.number = true
 vim.opt.relativenumber = true
 --plugins
-require("lazy").setup("plugins")
+require("lazy").setup({
+	spec = {
+		{import = "plugins"}
+	}
+})
 
 require("mason").setup()
 
 -- need to run this after mason setup
 require("dap-setup").setup()
 require("cmp-setup").setup()
-
-local function smart_width()
-  return math.floor(vim.o.columns * 0.5)
-end
-
-vim.diagnostic.config({
-	virtual_text = true,
-	float = {
-		wrap = true,
-		border = "rounded",
-		source = "always",
-		header = "",
-		prefix = "",
-		max_width = smart_width(),
-	},
-})
+require("lsp-setup").setup()
 
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 
-vim.keymap.set('n', '<leader><Space>', ":NvimTreeToggle<CR>", { noremap = true, silent = true })
-
 local keyopts = { noremap = true, silent = true }
+vim.keymap.set('n', '<leader><Space>', ":NvimTreeToggle<CR>", keyopts)
 
 vim.keymap.set('n', 'tn', ':tabnew<CR>', keyopts)
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  { max_width = smart_width() }
-)
 
 vim.cmd([[colorscheme tokyonight]])
 
